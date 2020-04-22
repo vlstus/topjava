@@ -19,12 +19,6 @@ public class UserMealWithExcess {
         this.excess = excess;
     }
 
-    public int getCalories() {
-        return calories;
-    }
-
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
