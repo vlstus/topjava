@@ -9,7 +9,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
+import java.util.function.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class UserMealsUtil {
@@ -65,20 +68,115 @@ public class UserMealsUtil {
         return filteredMeals;
     }
 
+//    public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+//        Map<LocalDate, Integer> caloriesByDate = meals.stream()
+//                .collect(Collectors.toMap(userMeal -> userMeal.getDateTime().toLocalDate(),
+//                        UserMeal::getCalories,
+//                        Integer::sum));
+//        return meals.stream()
+//                .filter(userMeal -> TimeUtil.isBetweenHalfOpen(userMeal.getDateTime().toLocalTime(), startTime, endTime))
+//                .map(userMeal -> {
+//                    if (caloriesByDate.get(userMeal.getDateTime().toLocalDate()) > caloriesPerDay) {
+//                        return userMeal.toUserMealWithExcess(true);
+//                    } else {
+//                        return userMeal.toUserMealWithExcess(false);
+//                    }
+//                })
+//                .collect(Collectors.toList());
+//    }
+
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        Map<LocalDate, Integer> caloriesByDate = meals.stream()
-                .collect(Collectors.toMap(userMeal -> userMeal.getDateTime().toLocalDate(),
-                        UserMeal::getCalories,
-                        Integer::sum));
+
         return meals.stream()
-                .filter(userMeal -> TimeUtil.isBetweenHalfOpen(userMeal.getDateTime().toLocalTime(), startTime, endTime))
-                .map(userMeal -> {
-                    if (caloriesByDate.get(userMeal.getDateTime().toLocalDate()) > caloriesPerDay) {
-                        return userMeal.toUserMealWithExcess(true);
-                    } else {
-                        return userMeal.toUserMealWithExcess(false);
+                .collect(new Collector<UserMeal, Map<LocalDate, List<UserMeal>>, List<UserMealWithExcess>>() {
+                    @Override
+                    public Supplier<Map<LocalDate, List<UserMeal>>> supplier() {
+                        return new Supplier<Map<LocalDate, List<UserMeal>>>() {
+                            @Override
+                            public Map<LocalDate, List<UserMeal>> get() {
+                                return new TreeMap<>();
+                            }
+                        };
                     }
-                })
-                .collect(Collectors.toList());
+
+                    @Override
+                    public BiConsumer<Map<LocalDate, List<UserMeal>>, UserMeal> accumulator() {
+                        return new BiConsumer<Map<LocalDate, List<UserMeal>>, UserMeal>() {
+                            @Override
+                            public void accept(Map<LocalDate, List<UserMeal>> localDateListMap, UserMeal userMeal) {
+                                localDateListMap.merge(userMeal.getDateTime().toLocalDate(), Collections.singletonList(userMeal),
+                                        new BiFunction<List<UserMeal>, List<UserMeal>, List<UserMeal>>() {
+                                            @Override
+                                            public List<UserMeal> apply(List<UserMeal> first, List<UserMeal> second) {
+                                                List<UserMeal> newList = new ArrayList<>();
+                                                newList.addAll(first);
+                                                newList.addAll(second);
+                                                return newList;
+                                            }
+                                        });
+                            }
+                        };
+                    }
+
+                    @Override
+                    public BinaryOperator<Map<LocalDate, List<UserMeal>>> combiner() {
+                        return new BinaryOperator<Map<LocalDate, List<UserMeal>>>() {
+                            @Override
+                            public Map<LocalDate, List<UserMeal>> apply(Map<LocalDate, List<UserMeal>> first, Map<LocalDate, List<UserMeal>> second) {
+                                return Stream.concat(first.entrySet().stream(), second.entrySet().stream())
+                                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                            }
+                        };
+                    }
+
+                    @Override
+                    public Function<Map<LocalDate, List<UserMeal>>, List<UserMealWithExcess>> finisher() {
+                        return new Function<Map<LocalDate, List<UserMeal>>, List<UserMealWithExcess>>() {
+                            @Override
+                            public List<UserMealWithExcess> apply(Map<LocalDate, List<UserMeal>> localDateListMap) {
+                                Map<LocalDate, Integer> caloriesByDate = localDateListMap.entrySet().stream()
+                                        .collect(Collectors.toMap(new Function<Map.Entry<LocalDate, List<UserMeal>>, LocalDate>() {
+                                            @Override
+                                            public LocalDate apply(Map.Entry<LocalDate, List<UserMeal>> localDateListEntry) {
+                                                return localDateListEntry.getKey();
+                                            }
+                                        }, new Function<Map.Entry<LocalDate, List<UserMeal>>, Integer>() {
+                                            @Override
+                                            public Integer apply(Map.Entry<LocalDate, List<UserMeal>> localDateListEntry) {
+                                                return localDateListEntry.getValue().stream().mapToInt(UserMeal::getCalories).sum();
+                                            }
+                                        }, new BinaryOperator<Integer>() {
+                                            @Override
+                                            public Integer apply(Integer first, Integer second) {
+                                                return Integer.sum(first, second);
+                                            }
+                                        }));
+                                return meals.stream()
+                                        .filter(userMeal -> TimeUtil.isBetweenHalfOpen(userMeal.getDateTime().toLocalTime(), startTime, endTime))
+                                        .map(userMeal -> {
+                                            if (caloriesByDate.get(userMeal.getDateTime().toLocalDate()) > caloriesPerDay) {
+                                                return userMeal.toUserMealWithExcess(true);
+                                            } else {
+                                                return userMeal.toUserMealWithExcess(false);
+                                            }
+                                        })
+                                        .collect(Collectors.toList());
+                            }
+                        };
+                    }
+
+                    @Override
+                    public Set<Characteristics> characteristics() {
+                        return new HashSet<Characteristics>() {
+                            {
+                                add(Characteristics.UNORDERED);
+                            }
+                        };
+                    }
+                });
+
+
     }
+
+
 }
