@@ -119,11 +119,7 @@ public class UserMealsUtil {
 
                     @Override
                     public Set<Characteristics> characteristics() {
-                        return new HashSet<Characteristics>() {
-                            {
-                                add(Characteristics.UNORDERED);
-                            }
-                        };
+                        return Collections.emptySet();
                     }
                 });
 
