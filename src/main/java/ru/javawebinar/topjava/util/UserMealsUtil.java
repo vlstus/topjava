@@ -122,7 +122,6 @@ public class UserMealsUtil {
                                 return Collections.emptySet();
                             }
                         });
-
     }
 
 }
