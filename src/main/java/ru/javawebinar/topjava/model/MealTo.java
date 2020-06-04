@@ -5,23 +5,21 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
 public class MealTo extends GenericMeal {
-    private final LocalDateTime dateTime;
 
-    private final String description;
 
-    private final int calories;
-
-    private final boolean excess;
+    private boolean excess;
 
     public MealTo(LocalDateTime dateTime, String description, int calories, boolean excess) {
-        this.dateTime = dateTime;
-        this.description = description;
-        this.calories = calories;
+        super(dateTime, description, calories);
         this.excess = excess;
     }
 
     public boolean isExcess() {
         return excess;
+    }
+
+    public void setExcess(boolean excess) {
+        this.excess = excess;
     }
 
     @Override
