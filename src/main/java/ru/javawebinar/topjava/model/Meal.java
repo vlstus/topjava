@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class Meal {
+public class Meal extends GenericMeal {
     private final LocalDateTime dateTime;
 
     private final String description;

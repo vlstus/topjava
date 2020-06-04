@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
-public class MealTo {
+public class MealTo extends GenericMeal {
     private final LocalDateTime dateTime;
 
     private final String description;
