@@ -3,14 +3,14 @@ package ru.javawebinar.topjava.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class UserMeal {
+public class Meal {
     private final LocalDateTime dateTime;
 
     private final String description;
 
     private final int calories;
 
-    public UserMeal(LocalDateTime dateTime, String description, int calories) {
+    public Meal(LocalDateTime dateTime, String description, int calories) {
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
@@ -20,10 +20,10 @@ public class UserMeal {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserMeal userMeal = (UserMeal) o;
-        return calories == userMeal.calories &&
-                Objects.equals(dateTime, userMeal.dateTime) &&
-                Objects.equals(description, userMeal.description);
+        Meal meal = (Meal) o;
+        return calories == meal.calories &&
+                Objects.equals(dateTime, meal.dateTime) &&
+                Objects.equals(description, meal.description);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class UserMeal {
         return calories;
     }
 
-    public UserMealWithExcess toUserMealWithExcess(boolean isExcess) {
-        return new UserMealWithExcess(this.dateTime, this.getDescription(), this.calories, isExcess);
+    public MealTo toUserMealWithExcess(boolean isExcess) {
+        return new MealTo(this.dateTime, this.getDescription(), this.calories, isExcess);
     }
 }
