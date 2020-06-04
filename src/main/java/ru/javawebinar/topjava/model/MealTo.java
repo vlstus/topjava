@@ -18,6 +18,10 @@ public class MealTo {
         this.excess = excess;
     }
 
+    public boolean isExcess() {
+        return excess;
+    }
+
     @Override
     public String toString() {
         return "MealTo{" +
