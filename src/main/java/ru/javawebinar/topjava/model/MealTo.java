@@ -1,6 +1,8 @@
 package ru.javawebinar.topjava.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 public class MealTo {
     private final LocalDateTime dateTime;
@@ -24,8 +26,9 @@ public class MealTo {
 
     @Override
     public String toString() {
+
         return "MealTo{" +
-                "dateTime=" + dateTime +
+                "dateTime=" + DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).format(dateTime) +
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
                 ", excess=" + excess +
