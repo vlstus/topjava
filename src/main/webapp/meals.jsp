@@ -7,7 +7,6 @@
 <head>
     <title>Meals</title>
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/table_style.css"/>
-
 </head>
 
 <body>
@@ -17,6 +16,7 @@
 <h2>Meals</h2>
 
 <table>
+
     <thead>
     <tr>
         <th>Date/Time</th>
@@ -28,30 +28,42 @@
     </thead>
 
     <tbody>
+
+
+
     <jsp:useBean id="mealsList" scope="request" type="java.util.List"/>
+
     <c:forEach items="${mealsList}" var="meal">
+
         <c:set var="exceed" value="${meal.excess}"/>
         <c:set var="dateTime" value="${meal.dateTime}"/>
         <c:set var="description" value="${meal.description}"/>
         <c:set var="calories" value="${meal.calories}"/>
+
         <c:choose>
             <c:when test="${exceed eq false}">
-                <tr>
-
-                    <td style="color: green"><javatime:format value="${dateTime}" style="MS"/></td>
-                    <td style="color: green"><c:out value="${description}"/></td>
-                    <td style="color: green"><c:out value="${calories}"/></td>
-                </tr>
-            </c:when>
-            <c:otherwise>
+                <style>
+                   tr{
+                       color: red;
+                   }
+                </style>
                 <tr>
                     <td style="color: red"><javatime:format value="${dateTime}" style="MS"/></td>
                     <td style="color: red"><c:out value="${description}"/></td>
                     <td style="color: red"><c:out value="${calories}"/></td>
                 </tr>
+            </c:when>
+            <c:otherwise>
+                <tr>
+                    <td style="color: green"><javatime:format value="${dateTime}" style="MS"/></td>
+                    <td style="color: green"><c:out value="${description}"/></td>
+                    <td style="color: green"><c:out value="${calories}"/></td>
+                </tr>
             </c:otherwise>
         </c:choose>
+
     </c:forEach>
+
     </tbody>
 </table>
 
