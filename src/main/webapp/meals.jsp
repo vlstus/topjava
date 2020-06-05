@@ -42,11 +42,6 @@
 
         <c:choose>
             <c:when test="${exceed eq false}">
-                <style>
-                   tr{
-                       color: red;
-                   }
-                </style>
                 <tr>
                     <td style="color: red"><javatime:format value="${dateTime}" style="MS"/></td>
                     <td style="color: red"><c:out value="${description}"/></td>
