@@ -8,6 +8,12 @@ public class Meal extends GenericMeal {
         super(dateTime, description, calories);
     }
 
+    public Meal(int id, LocalDateTime dateTime, String description, int calories) {
+        this(dateTime, description, calories);
+        setId(id);
+    }
+
+
     public void update(LocalDateTime dateTime, String description, int calories) {
         setDateTime(dateTime);
         setDescription(description);

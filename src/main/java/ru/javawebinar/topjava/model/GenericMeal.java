@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+
+/**
+ * Generic model-class for Meal entity
+ */
 public class GenericMeal {
 
     protected LocalDateTime dateTime;
@@ -12,6 +16,12 @@ public class GenericMeal {
     private Integer id;
 
     public GenericMeal(LocalDateTime dateTime, String description, int calories) {
+        this.dateTime = dateTime;
+        this.description = description;
+        this.calories = calories;
+    }
+
+    public GenericMeal(int id, LocalDateTime dateTime, String description, int calories) {
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;

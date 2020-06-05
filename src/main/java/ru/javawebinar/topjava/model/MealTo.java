@@ -14,6 +14,11 @@ public class MealTo extends GenericMeal {
         this.excess = excess;
     }
 
+    public MealTo(int id, LocalDateTime dateTime, String description, int calories, boolean excess) {
+        this(dateTime, description, calories, excess);
+        setId(id);
+    }
+
     public boolean isExcess() {
         return excess;
     }
