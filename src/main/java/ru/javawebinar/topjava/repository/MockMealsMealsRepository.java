@@ -12,8 +12,6 @@ import java.util.List;
 public class MockMealsMealsRepository implements MealsRepository<Meal> {
 
 
-    // TODO: 04-Jun-20 implement id generation strategy
-
     private List<Meal> mockData = Arrays.asList(
             new Meal(0, LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
             new Meal(1, LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
@@ -39,17 +37,43 @@ public class MockMealsMealsRepository implements MealsRepository<Meal> {
 
     @Override
     public synchronized boolean save(Meal entity) {
-        return false;
+        return mockData.add(entity);
     }
 
     @Override
     public synchronized boolean update(int id, LocalDateTime dateTime, String description, int calories) {
-        return false;
+        Meal mealFound = null;
+        for (Meal meal :
+                mockData) {
+            if (meal.getId() == id) {
+                mealFound = meal;
+                break;
+            }
+        }
+        if (mealFound != null) {
+            mealFound.setDateTime(dateTime);
+            mealFound.setDescription(description);
+            mealFound.setCalories(calories);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public synchronized Meal deleteById(int id) {
-        return null;
+        Meal mealFound = null;
+        for (Meal meal :
+                mockData) {
+            if (meal.getId() == id) {
+                mealFound = meal;
+                break;
+            }
+        }
+        if (mealFound != null) {
+            mockData.remove(mealFound);
+        }
+        return mealFound;
     }
 
 

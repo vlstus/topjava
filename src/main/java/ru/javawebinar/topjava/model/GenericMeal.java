@@ -15,6 +15,10 @@ public class GenericMeal {
     protected int calories;
     private Integer id;
 
+    {
+        this.id = System.identityHashCode(this);
+    }
+
     public GenericMeal(LocalDateTime dateTime, String description, int calories) {
         this.dateTime = dateTime;
         this.description = description;
