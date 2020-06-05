@@ -22,6 +22,19 @@ public class MealTo {
         return excess;
     }
 
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
     @Override
     public String toString() {
         return "MealTo{" +
