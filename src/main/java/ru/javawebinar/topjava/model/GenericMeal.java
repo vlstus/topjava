@@ -8,7 +8,7 @@ import java.time.LocalTime;
 /**
  * Generic model-class for Meal entity
  */
-public class GenericMeal {
+public abstract class GenericMeal {
 
     protected LocalDateTime dateTime;
     protected String description;
