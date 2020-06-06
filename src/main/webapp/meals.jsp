@@ -4,9 +4,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html lang="ru">
+
+<style>
+    <%@include file="resources/css/table_style.css" %>
+</style>
 <head>
     <title>Meals</title>
-    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/table_style.css"/>
 </head>
 
 <body>
@@ -30,7 +33,6 @@
     <tbody>
 
 
-
     <jsp:useBean id="mealsList" scope="request" type="java.util.List"/>
 
     <c:forEach items="${mealsList}" var="meal">
@@ -46,6 +48,10 @@
                     <td style="color: red"><javatime:format value="${dateTime}" style="MS"/></td>
                     <td style="color: red"><c:out value="${description}"/></td>
                     <td style="color: red"><c:out value="${calories}"/></td>
+                    <td>
+                        <button type="submit"><a href="/update?id=<c:out value='${meal.id}'/>">edit</a></button>
+                        <button type="submit"><a href="/delete?id=<c:out value='${meal.id}'/>">delete</a></button>
+                    </td>
                 </tr>
             </c:when>
             <c:otherwise>
@@ -53,6 +59,10 @@
                     <td style="color: green"><javatime:format value="${dateTime}" style="MS"/></td>
                     <td style="color: green"><c:out value="${description}"/></td>
                     <td style="color: green"><c:out value="${calories}"/></td>
+                    <td>
+                        <button type="submit"><a href="/update?id=<c:out value='${meal.id}'/>">edit</a></button>
+                        <button type="submit"><a href="/delete?id=<c:out value='${meal.id}'/>">delete</a></button>
+                    </td>
                 </tr>
             </c:otherwise>
         </c:choose>
@@ -62,6 +72,8 @@
     </tbody>
 </table>
 
+<button type="submit"><a href="/create">add</a></button>
+<button type="submit"><a href="/read">find</a></button>
 
 </body>
 
