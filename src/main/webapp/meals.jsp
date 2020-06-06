@@ -15,6 +15,7 @@
 
 <h2>Meals</h2>
 
+
 <table>
 
     <thead>
@@ -30,7 +31,6 @@
     <tbody>
 
 
-
     <jsp:useBean id="mealsList" scope="request" type="java.util.List"/>
 
     <c:forEach items="${mealsList}" var="meal">
@@ -42,22 +42,17 @@
 
         <c:choose>
             <c:when test="${exceed eq false}">
-                <style>
-                    tr{
-                        color: red;
-                    }
-                </style>
-                <tr>
-                    <td style="color: red"><javatime:format value="${dateTime}" style="MS"/></td>
-                    <td style="color: red"><c:out value="${description}"/></td>
-                    <td style="color: red"><c:out value="${calories}"/></td>
+                <tr style="color: red">
+                    <td><javatime:format value="${dateTime}" style="MS"/></td>
+                    <td><c:out value="${description}"/></td>
+                    <td><c:out value="${calories}"/></td>
                 </tr>
             </c:when>
             <c:otherwise>
-                <tr>
-                    <td style="color: green"><javatime:format value="${dateTime}" style="MS"/></td>
-                    <td style="color: green"><c:out value="${description}"/></td>
-                    <td style="color: green"><c:out value="${calories}"/></td>
+                <tr style="color: green">
+                    <td><javatime:format value="${dateTime}" style="MS"/></td>
+                    <td><c:out value="${description}"/></td>
+                    <td><c:out value="${calories}"/></td>
                 </tr>
             </c:otherwise>
         </c:choose>
@@ -66,6 +61,7 @@
 
     </tbody>
 </table>
+
 
 
 </body>
