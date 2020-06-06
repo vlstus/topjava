@@ -6,14 +6,14 @@
 <html lang="ru">
 
 <style>
-    <%@include file="resources/css/table_style.css" %>
+    <%@include file="../resources/css/table_style.css" %>
 </style>
 <head>
     <title>Meals</title>
 </head>
 
 <body>
-<h3><a href="index.html">Home</a></h3>
+<h3><a href="../index.html">Home</a></h3>
 <hr>
 
 <h2>Meals</h2>
