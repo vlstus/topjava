@@ -26,8 +26,8 @@ public class MealsService {
         return repository.save(entity);
     }
 
-    public boolean update(int id, LocalDateTime dateTime, String description, int calories) {
-        return repository.update(id, dateTime, description, calories);
+    public boolean update(int id, Meal fieldsHolder) {
+        return repository.update(id, fieldsHolder);
     }
 
     public Meal deleteById(int id) {

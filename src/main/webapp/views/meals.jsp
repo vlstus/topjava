@@ -73,7 +73,13 @@
 </table>
 
 <button type="submit"><a href="/create">add</a></button>
-<button type="submit"><a href="/read">find</a></button>
+<hr>
+Find by id
+<form action="/read" method="get" name="FindById">
+    <label for="id">ID:</label><br>
+    <input type="text" id="id" name="id"><br>
+    <input type="submit" value="find">
+</form>
 
 </body>
 
