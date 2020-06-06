@@ -1,7 +1,7 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.repository.MockMealsMealsRepository;
+import ru.javawebinar.topjava.repository.MockMealsRepository;
 import ru.javawebinar.topjava.service.MealsService;
 import ru.javawebinar.topjava.util.MealsUtil;
 
@@ -20,7 +20,7 @@ public class MealServlet extends HttpServlet {
     private final MealsService service;
 
     public MealServlet() {
-        service = new MealsService(new MockMealsMealsRepository());
+        service = new MealsService(new MockMealsRepository());
     }
 
     @Override

@@ -1,16 +1,16 @@
 package ru.javawebinar.topjava.service;
 
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.repository.MockMealsMealsRepository;
+import ru.javawebinar.topjava.repository.MockMealsRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class MealsService {
 
-    private final MockMealsMealsRepository repository;
+    private final MockMealsRepository repository;
 
-    public MealsService(MockMealsMealsRepository repository) {
+    public MealsService(MockMealsRepository repository) {
         this.repository = repository;
     }
 

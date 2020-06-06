@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class MockMealsMealsRepository implements MealsRepository<Meal> {
+public class MockMealsRepository implements Repository<Meal> {
 
     private static volatile AtomicInteger currentRepoID = new AtomicInteger();
 
@@ -45,7 +45,7 @@ public class MockMealsMealsRepository implements MealsRepository<Meal> {
     }
 
     @Override
-    public synchronized boolean update(int id, LocalDateTime dateTime, String description, int calories) {
+    public synchronized boolean update(int id, Meal instanceToStoreFields) {
         Meal mealFound = null;
         for (Meal meal :
                 mockData) {
@@ -55,9 +55,9 @@ public class MockMealsMealsRepository implements MealsRepository<Meal> {
             }
         }
         if (mealFound != null) {
-            mealFound.setDateTime(dateTime);
-            mealFound.setDescription(description);
-            mealFound.setCalories(calories);
+            mealFound.setDateTime(instanceToStoreFields.getDateTime());
+            mealFound.setDescription(instanceToStoreFields.getDescription());
+            mealFound.setCalories(instanceToStoreFields.getCalories());
             return true;
         } else {
             return false;

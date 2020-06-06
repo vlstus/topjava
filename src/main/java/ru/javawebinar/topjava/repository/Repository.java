@@ -1,9 +1,8 @@
 package ru.javawebinar.topjava.repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-public interface MealsRepository<T> {
+public interface Repository<T> {
 
     List<T> getAll();
 
@@ -11,7 +10,7 @@ public interface MealsRepository<T> {
 
     boolean save(T entity);
 
-    boolean update(int id, LocalDateTime dateTime, String description, int calories);
+    boolean update(int id, T instanceToStoreFields);
 
     T deleteById(int id);
 }
