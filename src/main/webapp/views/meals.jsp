@@ -33,7 +33,6 @@
     <tbody>
 
 
-    <jsp:useBean id="mealsList" scope="request" type="java.util.List"/>
 
     <c:forEach items="${mealsList}" var="meal">
 
@@ -45,23 +44,31 @@
         <c:choose>
             <c:when test="${exceed eq false}">
                 <tr>
-                    <td style="color: red"><javatime:format value="${dateTime}" style="MS"/></td>
-                    <td style="color: red"><c:out value="${description}"/></td>
-                    <td style="color: red"><c:out value="${calories}"/></td>
+                    <td style="color: green"><javatime:format value="${dateTime}" style="MS"/></td>
+                    <td style="color: green"><c:out value="${description}"/></td>
+                    <td style="color: green"><c:out value="${calories}"/></td>
                     <td>
-                        <button type="submit"><a href="/update?id=<c:out value='${meal.id}'/>">edit</a></button>
-                        <button type="submit"><a href="/delete?id=<c:out value='${meal.id}'/>">delete</a></button>
+                        <button type="submit"><a
+                                href="${pageContext.request.contextPath}/meals?action=update&id=<c:out value='${meal.id}'/>">edit</a>
+                        </button>
+                        <button type="submit"><a
+                                href="${pageContext.request.contextPath}/meals?action=delete&id=<c:out value='${meal.id}'/>">delete</a>
+                        </button>
                     </td>
                 </tr>
             </c:when>
             <c:otherwise>
                 <tr>
-                    <td style="color: green"><javatime:format value="${dateTime}" style="MS"/></td>
-                    <td style="color: green"><c:out value="${description}"/></td>
-                    <td style="color: green"><c:out value="${calories}"/></td>
+                    <td style="color: red"><javatime:format value="${dateTime}" style="MS"/></td>
+                    <td style="color: red"><c:out value="${description}"/></td>
+                    <td style="color: red"><c:out value="${calories}"/></td>
                     <td>
-                        <button type="submit"><a href="/update?id=<c:out value='${meal.id}'/>">edit</a></button>
-                        <button type="submit"><a href="/delete?id=<c:out value='${meal.id}'/>">delete</a></button>
+                        <button type="submit"><a
+                                href="${pageContext.request.contextPath}/meals?action=update&id=<c:out value='${meal.id}'/>">edit</a>
+                        </button>
+                        <button type="submit"><a
+                                href="${pageContext.request.contextPath}/meals?action=delete&id=<c:out value='${meal.id}'/>">delete</a>
+                        </button>
                     </td>
                 </tr>
             </c:otherwise>
@@ -72,13 +79,14 @@
     </tbody>
 </table>
 
-<button type="submit"><a href="/create">add</a></button>
+<button type="submit"><a href="${pageContext.request.contextPath}/meals?action=create">add</a></button>
 <hr>
 Find by id
-<form action="/read" method="get" name="FindById">
+<form action="${pageContext.request.contextPath}/meals" method="get" name="FindById">
+    <input type="hidden" name="action" value="read">
     <label for="id">ID:</label><br>
     <input type="text" id="id" name="id"><br>
-    <input type="submit" value="find">
+    <input type="submit" value="submit">
 </form>
 
 </body>
