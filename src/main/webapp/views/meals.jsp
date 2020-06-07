@@ -34,7 +34,7 @@
 
 
 
-    <c:forEach items="${mealsList}" var="meal">
+    <c:forEach items="${requestScope.mealsList}" var="meal">
 
         <c:set var="exceed" value="${meal.excess}"/>
         <c:set var="dateTime" value="${meal.dateTime}"/>
