@@ -9,7 +9,7 @@
 <body>
 
 
-<jsp:useBean id="meal" scope="request" type="ru.javawebinar.topjava.model.Meal"/>
+
 
 <form action="meals" method="post">
 
