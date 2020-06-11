@@ -1,14 +1,15 @@
 package ru.javawebinar.topjava.repository;
 
-import java.util.List;
+import java.util.Collection;
+
 
 public interface Repository<T> {
 
-    List<T> getAll();
+    Collection<T> getAll();
 
     T getById(int id);
 
-    boolean save(T entity);
+    T save(T entity);
 
     boolean update(int id, T instanceToStoreFields);
 

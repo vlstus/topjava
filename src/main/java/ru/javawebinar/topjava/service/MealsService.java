@@ -1,28 +1,29 @@
 package ru.javawebinar.topjava.service;
 
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.repository.MockMealsRepository;
+import ru.javawebinar.topjava.repository.InMemoryMealsRepository;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MealsService {
 
-    private final MockMealsRepository repository;
+    private final InMemoryMealsRepository repository;
 
-    public MealsService(MockMealsRepository repository) {
+    public MealsService(InMemoryMealsRepository repository) {
         this.repository = repository;
     }
 
     public List<Meal> getAllMeals() {
-        return repository.getAll();
+        return new ArrayList<>(repository.getAll());
     }
 
     public Meal getById(int id) {
         return repository.getById(id);
     }
 
-    public boolean save(Meal entity) {
+    public Meal save(Meal entity) {
         return repository.save(entity);
     }
 
