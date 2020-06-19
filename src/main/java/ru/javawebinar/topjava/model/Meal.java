@@ -7,6 +7,8 @@ import java.time.LocalTime;
 public class Meal extends AbstractBaseEntity {
 
 
+    private Integer userId;
+
     private final LocalDateTime dateTime;
 
     private final String description;
@@ -18,7 +20,12 @@ public class Meal extends AbstractBaseEntity {
     }
 
     public Meal(Integer id, LocalDateTime dateTime, String description, int calories) {
+        this(null, id, dateTime, description, calories);
+    }
+
+    public Meal(Integer userId, Integer id, LocalDateTime dateTime, String description, int calories) {
         super(id);
+        this.userId = userId;
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
@@ -42,6 +49,15 @@ public class Meal extends AbstractBaseEntity {
 
     public LocalTime getTime() {
         return dateTime.toLocalTime();
+    }
+
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public boolean isNew() {
