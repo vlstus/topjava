@@ -12,14 +12,14 @@ import java.util.function.Predicate;
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 
 public class MealRestController {
+
     private MealService service;
 
     public List<MealTo> getAll() {
         return null;
     }
 
-    public List<MealTo> getAllFilteredByDateOrTime() {
-        Predicate<Meal> filter;
+    public List<MealTo> getAllFilteredByDateOrTime(Predicate<Meal> filter) {
         return null;
     }
 
