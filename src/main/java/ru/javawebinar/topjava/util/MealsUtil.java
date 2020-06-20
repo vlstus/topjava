@@ -31,6 +31,12 @@ public class MealsUtil {
         return filterByPredicate(meals, caloriesPerDay, meal -> true);
     }
 
+    public static List<Meal> getEntities(Collection<MealTo> meals) {
+        return meals.stream()
+                .map(MealsUtil::createEntity)
+                .collect(Collectors.toList());
+    }
+
     public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
         return filterByPredicate(meals, caloriesPerDay, meal -> DateTimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
     }
