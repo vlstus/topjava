@@ -14,8 +14,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class InMemoryMealRepository implements MealRepository {
-    private final Map<Integer, List<Meal>> repository = new ConcurrentHashMap<>();
-    private final AtomicInteger counter = new AtomicInteger(0);
+    private Map<Integer, List<Meal>> repository = new ConcurrentHashMap<>();
+    private AtomicInteger counter = new AtomicInteger(0);
 
     {
         User mockUser = new User(null, "First", "FirstEmail@example.com", "firstPassword", 2000, true, Collections.singleton(Role.USER));

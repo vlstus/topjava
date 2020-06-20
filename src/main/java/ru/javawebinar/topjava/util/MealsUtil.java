@@ -35,6 +35,7 @@ public class MealsUtil {
         return filterByPredicate(meals, caloriesPerDay, meal -> DateTimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
     }
 
+
     public static List<MealTo> filterByPredicate(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
                 .collect(
@@ -50,5 +51,16 @@ public class MealsUtil {
 
     private static MealTo createTo(Meal meal, boolean excess) {
         return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
+    }
+
+    public static MealTo createToWithSenselessExcessField(Meal meal) {
+        return createTo(meal, false);
+    }
+
+
+    public static <T> Predicate<T> combinePredicates(Predicate<T>... predicates) {
+        return Arrays.stream(predicates)
+                .reduce(Predicate::and)
+                .orElse(predicate -> true);
     }
 }
