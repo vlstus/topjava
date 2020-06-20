@@ -7,6 +7,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
@@ -16,9 +17,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
@@ -73,6 +79,10 @@ public class MealServlet extends HttpServlet {
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
+            case "filter":
+                request.setAttribute("meal", controller.getAllFilteredByDateOrTime(formPredicate(request)));
+                request.getRequestDispatcher("/meals.jps").forward(request, response);
+                break;
             case "all":
             default:
                 log.info("getAll");
@@ -93,4 +103,52 @@ public class MealServlet extends HttpServlet {
         super.destroy();
         appCtx.close();
     }
+
+    private Predicate<Meal> formPredicate(HttpServletRequest request) {
+        return MealsUtil.combinePredicates(
+                meal -> {
+                    LocalDate[] localDates = parseDates(request);
+                    return DateTimeUtil.isBetweenInclusive(meal.getDate(), localDates[0], localDates[1]);
+                },
+                meal -> {
+                    LocalTime[] localTimes = parseTimes(request);
+                    return DateTimeUtil.isBetweenInclusive(meal.getTime(), localTimes[0], localTimes[1]);
+                });
+    }
+
+    private LocalDate[] parseDates(HttpServletRequest request) {
+        LocalDate[] localDates = new LocalDate[2];
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        if (startDate.isEmpty()) {
+            localDates[0] = LocalDate.MIN;
+        } else {
+            localDates[0] = LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE);
+        }
+        if (endDate.isEmpty()) {
+            localDates[1] = LocalDate.MAX;
+        } else {
+            localDates[1] = LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE);
+        }
+        return localDates;
+    }
+
+    private LocalTime[] parseTimes(HttpServletRequest request) {
+        LocalTime[] localTimes = new LocalTime[2];
+        String startTime = request.getParameter("startTime");
+        String endTime = request.getParameter("endTime");
+        if (startTime.isEmpty()) {
+            localTimes[0] = LocalTime.MIN;
+        } else {
+            localTimes[0] = LocalTime.parse(startTime);
+        }
+        if (endTime.isEmpty()) {
+            localTimes[1] = LocalTime.MAX;
+        } else {
+            localTimes[1] = LocalTime.parse(endTime);
+        }
+        return localTimes;
+    }
+
+
 }

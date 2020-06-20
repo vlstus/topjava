@@ -25,8 +25,8 @@ public class MealRestController {
         return service.getAll(authUserId());
     }
 
-    public List<MealTo> getAllFilteredByDateOrTime(Predicate<Meal>... filters) {
-        return service.getAllFilteredByDateOrTime(combinePredicates(filters), authUserId());
+    public List<MealTo> getAllFilteredByDateOrTime(Predicate<Meal> filter) {
+        return service.getAllFilteredByDateOrTime(filter, authUserId());
     }
 
     public MealTo getById(Integer id) throws NotFoundException {

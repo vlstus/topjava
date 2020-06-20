@@ -21,13 +21,13 @@
     <form action="meals">
         <input type="hidden" name="action" value="filter">
         <label for="fromDate">From Date(inclusive):</label>
-        <input type="datetime-local" id="fromDate" name="fromDate">
+        <input type="date" id="fromDate" name="startDate">
         <label for="toDate">To Date(inclusive):</label>
-        <input type="datetime-local" id="toDate" name="toDate"><br>
+        <input type="date" id="toDate" name="endDate"><br>
         <label for="fromTime">From Time(inclusive):</label>
-        <input type="time" id="fromTime" name="fromTime">
+        <input type="time" id="fromTime" name="startTime">
         <label for="toTime">To Time(inclusive):</label>
-        <input type="time" id="toTime" name="toTime">
+        <input type="time" id="toTime" name="endTime">
         <br>
         <input type="submit" value="submit">
     </form>

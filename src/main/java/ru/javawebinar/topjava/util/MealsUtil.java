@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.temporal.Temporal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -68,7 +69,8 @@ public class MealsUtil {
     }
 
 
-    public static <T> Predicate<T> combinePredicates(Predicate<T>... predicates) {
+    @SafeVarargs
+    public static <T extends Meal> Predicate<T> combinePredicates(Predicate<T>... predicates) {
         return Arrays.stream(predicates)
                 .reduce(Predicate::and)
                 .orElse(predicate -> true);
