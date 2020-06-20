@@ -81,7 +81,7 @@ public class MealServlet extends HttpServlet {
                 break;
             case "filter":
                 request.setAttribute("meals",
-                        MealsUtil.getTos(MealsUtil.getEntities(controller.getAllFilteredByDateOrTime(formPredicate(request))), MealsUtil.DEFAULT_CALORIES_PER_DAY));
+                        controller.getAllFilteredByDateOrTime(formPredicate(request)));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":

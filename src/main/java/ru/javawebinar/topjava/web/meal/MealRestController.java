@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
-import static ru.javawebinar.topjava.util.MealsUtil.combinePredicates;
+
 
 
 @Controller
