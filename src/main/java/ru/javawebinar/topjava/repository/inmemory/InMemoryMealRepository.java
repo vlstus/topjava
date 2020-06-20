@@ -20,10 +20,9 @@ public class InMemoryMealRepository implements MealRepository {
     private AtomicInteger counter = new AtomicInteger(0);
 
     {
-        User mockUser = new User(null, "First", "FirstEmail@example.com", "firstPassword", 2000, true, Collections.singleton(Role.USER));
         InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-        inMemoryUserRepository.save(mockUser);
-        MealsUtil.MEALS.forEach(meal -> this.save(meal, mockUser.getId()));
+        inMemoryUserRepository.save(inMemoryUserRepository.get(1));
+        MealsUtil.MEALS.forEach(meal -> this.save(meal, inMemoryUserRepository.get(1).getId()));
     }
 
     @Override

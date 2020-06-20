@@ -23,7 +23,7 @@ public class MealService {
     private MealRepository repository;
 
     public List<MealTo> getAll(int userId) {
-        return getFilteredTos(repository.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY, LocalTime.MAX, LocalTime.MAX);
+        return getFilteredTos(repository.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY, LocalTime.MIN, LocalTime.MAX);
     }
 
     public List<MealTo> getAllFilteredByDateOrTime(Predicate<Meal> filter, int userId) {
