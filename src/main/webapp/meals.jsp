@@ -18,6 +18,20 @@
 </head>
 <body>
 <section>
+    <form action="meals?filter">
+        <label for="fromDate">From Date(inclusive):</label>
+        <input type="datetime-local" id="fromDate" name="fromDate">
+        <label for="toDate">To Date(inclusive):</label>
+        <input type="datetime-local" id="toDate" name="toDate"><br>
+        <label for="fromTime">From Time(inclusive):</label>
+        <input type="time" id="fromTime" name="fromTime">
+        <label for="toTime">To Time(inclusive):</label>
+        <input type="time" id="toTime" name="toTime">
+        <br>
+        <input type="submit" value="submit">
+    </form>
+</section>
+<section>
     <h3><a href="index.html">Home</a></h3>
     <hr/>
     <h2>Meals</h2>
@@ -34,7 +48,7 @@
         </tr>
         </thead>
         <c:forEach items="${meals}" var="meal">
-            <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
+            <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr class="${meal.excess ? 'excess' : 'normal'}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
