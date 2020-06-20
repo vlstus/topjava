@@ -8,6 +8,7 @@ import ru.javawebinar.topjava.web.user.AdminRestController;
 
 import java.util.Arrays;
 
+@Deprecated
 public class SpringMain {
     public static void main(String[] args) {
         // java 7 automatic resource management

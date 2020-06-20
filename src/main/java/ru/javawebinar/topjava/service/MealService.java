@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.to.MealTo;
@@ -14,8 +16,10 @@ import static ru.javawebinar.topjava.util.MealsUtil.getFilteredTos;
 import static ru.javawebinar.topjava.util.MealsUtil.createToWithSenselessExcessField;
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 
+@Service
 public class MealService {
 
+    @Autowired
     private MealRepository repository;
 
     public List<MealTo> getAll(int userId) {
