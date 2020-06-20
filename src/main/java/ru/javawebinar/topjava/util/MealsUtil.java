@@ -57,6 +57,10 @@ public class MealsUtil {
         return createTo(meal, false);
     }
 
+    public static Meal createEntity(MealTo mealTo) {
+        return new Meal(mealTo.getUserId(), mealTo.getId(), mealTo.getDateTime(), mealTo.getDescription(), mealTo.getCalories());
+    }
+
 
     public static <T> Predicate<T> combinePredicates(Predicate<T>... predicates) {
         return Arrays.stream(predicates)
