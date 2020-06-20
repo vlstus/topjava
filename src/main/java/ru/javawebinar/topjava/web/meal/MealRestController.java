@@ -10,32 +10,33 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
+import static ru.javawebinar.topjava.util.MealsUtil.combinePredicates;
 
 public class MealRestController {
 
     private MealService service;
 
     public List<MealTo> getAll() {
-        return null;
+        return service.getAll(authUserId());
     }
 
-    public List<MealTo> getAllFilteredByDateOrTime(Predicate<Meal> filter) {
-        return null;
+    public List<MealTo> getAllFilteredByDateOrTime(Predicate<Meal>... filters) {
+        return service.getAllFilteredByDateOrTime(combinePredicates(filters), authUserId());
     }
 
     public MealTo getById(Integer id) throws NotFoundException {
-        return null;
+        return service.getById(id, authUserId());
     }
 
-    public MealTo deleteById(Integer id) throws NotFoundException {
-        return null;
+    public boolean deleteById(Integer id) throws NotFoundException {
+        return service.deleteById(id, authUserId());
     }
 
     public boolean save(Meal mealToSave) {
-        return false;
+        return service.save(mealToSave, authUserId());
     }
 
     public boolean update(Meal mealToUpdate, Integer mealId) throws NotFoundException {
-        return false;
+        return service.update(mealToUpdate, mealId, authUserId());
     }
 }
