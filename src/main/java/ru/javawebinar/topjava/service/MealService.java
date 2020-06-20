@@ -27,7 +27,7 @@ public class MealService {
     }
 
     public List<MealTo> getAllFilteredByDateOrTime(Predicate<Meal> filter, int userId) {
-        return getFilteredTos(repository.getAllFilteredByDateOrTime(filter, userId), MealsUtil.DEFAULT_CALORIES_PER_DAY, LocalTime.MAX, LocalTime.MAX);
+        return getFilteredTos(repository.getAllFilteredByDateOrTime(filter, userId), MealsUtil.DEFAULT_CALORIES_PER_DAY, LocalTime.MIN, LocalTime.MAX);
     }
 
     public MealTo getById(Integer id, int userId) throws NotFoundException {
