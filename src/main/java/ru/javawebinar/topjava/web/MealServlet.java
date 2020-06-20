@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.DateTimeUtil;
@@ -22,7 +21,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -64,6 +62,7 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
+
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
@@ -83,6 +82,10 @@ public class MealServlet extends HttpServlet {
                 request.setAttribute("meals",
                         controller.getAllFilteredByDateOrTime(formPredicate(request)));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
+                break;
+            case "mealsForId":
+                SecurityUtil.setAuthUserId(Integer.parseInt(request.getParameter("userId")));
+                response.sendRedirect("meals");
                 break;
             case "all":
             default:
