@@ -18,7 +18,8 @@
 </head>
 <body>
 <section>
-    <form action="meals?filter">
+    <form action="meals">
+        <input type="hidden" name="action" value="filter">
         <label for="fromDate">From Date(inclusive):</label>
         <input type="datetime-local" id="fromDate" name="fromDate">
         <label for="toDate">To Date(inclusive):</label>
