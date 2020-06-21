@@ -6,13 +6,13 @@ import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.List;
 import java.util.function.Predicate;
 
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
-
 
 
 @Controller
@@ -38,10 +38,12 @@ public class MealRestController {
     }
 
     public boolean save(Meal mealToSave) {
+        ValidationUtil.checkNew(mealToSave);
         return service.save(mealToSave, authUserId());
     }
 
     public boolean update(Meal mealToUpdate, Integer mealId) throws NotFoundException {
+        ValidationUtil.assureIdConsistent(mealToUpdate, mealId);
         return service.update(mealToUpdate, mealId, authUserId());
     }
 }

@@ -7,6 +7,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -23,7 +24,7 @@ public class MealService {
     private MealRepository repository;
 
     public List<MealTo> getAll(int userId) {
-        return getFilteredTos(repository.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY, LocalTime.MIN, LocalTime.MAX);
+        return getFilteredTos(repository.getAll(userId), SecurityUtil.authUserCaloriesPerDay(), LocalTime.MIN, LocalTime.MAX);
     }
 
     public List<MealTo> getAllFilteredByDateOrTime(Predicate<Meal> filter, int userId) {
