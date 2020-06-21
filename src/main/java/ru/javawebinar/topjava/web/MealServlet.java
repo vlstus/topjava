@@ -112,11 +112,11 @@ public class MealServlet extends HttpServlet {
         return MealsUtil.combinePredicates(
                 meal -> {
                     LocalDate[] localDates = parseDates(request);
-                    return DateTimeUtil.isBetweenInclusive(meal.getDate(), localDates[0], localDates[1]);
+                    return DateTimeUtil.isBetweenHalfOpen(meal.getDate(), localDates[0], localDates[1]);
                 },
                 meal -> {
                     LocalTime[] localTimes = parseTimes(request);
-                    return DateTimeUtil.isBetweenInclusive(meal.getTime(), localTimes[0], localTimes[1]);
+                    return DateTimeUtil.isBetweenHalfOpen(meal.getTime(), localTimes[0], localTimes[1]);
                 });
     }
 
