@@ -12,6 +12,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,12 +46,12 @@ public class JdbcMealRepository implements MealRepository {
                 .addValue("user_id", userId)
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
-                .addValue("dateTime", meal.getDateTime());
+                .addValue("dateTime", Timestamp.valueOf(meal.getDateTime()));
         if (meal.isNew()) {
             Number mealId = insertMeal.executeAndReturnKey(map);
             meal.setId(mealId.intValue());
         } else if (namedParameterJdbcTemplate.update(
-                "UPDATE user_meals SET description=:description, calories=:calories, datetime=:datetime " +
+                "UPDATE user_meals SET description=:description, calories=:calories, datetime=:dateTime " +
                         "WHERE id=:id AND user_id=:user_id", map) == 0) {
             return null;
         }
