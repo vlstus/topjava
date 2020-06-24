@@ -16,10 +16,12 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 import static org.junit.Assert.*;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -53,6 +55,7 @@ public class MealServiceTest {
                 .orElse(null));
         assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND, NOT_FOUND));
         assertThrows(NotFoundException.class, () -> service.get(MEAL_ID, NOT_FOUND));
+        assertThrows(NotFoundException.class, () -> service.get(MEAL_ID, USER_ID + 1));
     }
 
     @Test
@@ -60,6 +63,7 @@ public class MealServiceTest {
         service.delete(MEAL_ID, USER_ID);
         assertNull(repository.get(MEAL_ID, USER_ID));
         assertThrows(NotFoundException.class, () -> service.delete(MEAL_ID + 1, NOT_FOUND));
+        assertThrows(NotFoundException.class, () -> service.delete(MEAL_ID + 2, USER_ID));
     }
 
     @Test
@@ -72,6 +76,11 @@ public class MealServiceTest {
     public void getAll() {
         assertNotNull(service.getAll(USER_ID));
         org.assertj.core.api.Assertions.assertThat(service.getAll(NOT_FOUND)).isEmpty();
+        List<Meal> mealsForUser = meal.stream()
+                .filter(testMeal -> testMeal.getDescription().equals("Meal1") || testMeal.getDescription().equals("Meal2") || testMeal.getDescription().equals("Meal5"))
+                .sorted(Comparator.comparing(Meal::getDateTime))
+                .collect(Collectors.toList());
+        assertMatch(service.getAll(USER_ID), mealsForUser);
     }
 
     @Test
@@ -79,6 +88,7 @@ public class MealServiceTest {
         Meal updated = getUpdated();
         service.update(updated, USER_ID);
         MealTestData.assertMatch(service.get(updated.getId(), USER_ID), updated);
+        assertThrows(NotFoundException.class, () -> service.update(updated, USER_ID + 1));
     }
 
     @Test
