@@ -57,13 +57,12 @@ public class MealServiceTest {
     }
 
     @Test
-    @Transactional
     public void create() throws Exception {
         Meal created = service.create(getNew(), USER_ID);
         int newId = created.id();
         Meal newMeal = getNew();
         newMeal.setId(newId);
-//        newMeal.setUser(created.getUser());
+        newMeal.setUser(created.getUser());
         MEAL_MATCHER.assertMatch(created, newMeal);
         MEAL_MATCHER.assertMatch(service.get(newId, USER_ID), newMeal);
     }

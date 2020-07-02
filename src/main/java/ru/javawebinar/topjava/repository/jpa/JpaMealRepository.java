@@ -22,6 +22,7 @@ public class JpaMealRepository implements MealRepository {
     @Override
     public Meal save(Meal meal, int userId) {
         User currentUser = em.getReference(User.class, userId);
+        getFieldsFromDatabaseDirtyWay(currentUser);
         if (meal.isNew()) {
             meal.setUser(currentUser);
             em.persist(meal);
@@ -64,5 +65,15 @@ public class JpaMealRepository implements MealRepository {
                 .setParameter("startDateTime", startDateTime)
                 .setParameter("endDateTime", endDateTime)
                 .getResultList();
+    }
+
+    private void getFieldsFromDatabaseDirtyWay(User user) {
+        user.getId();
+        user.getEmail();
+        user.getName();
+        user.getCaloriesPerDay();
+        user.getPassword();
+        user.getRegistered();
+        user.getRoles();
     }
 }
