@@ -1,7 +1,9 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.repository.UserRepository;
@@ -26,12 +28,20 @@ public class DataJpaMealRepository implements MealRepository {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     @Override
     public Meal save(Meal meal, int userId) {
-        if (meal.getUser() == null) {
+        if (meal.isNew()) {
             meal.setUser(userRepository.getOne(userId));
+            return crudRepository.save(meal);
+        } else {
+            meal.setUser(userRepository.getOne(userId));
+            if (meal.getUser().id() != userId) {
+                return null;
+            } else {
+                return crudRepository.save(meal);
+            }
         }
-        return crudRepository.save(meal);
     }
 
     @Override
@@ -46,24 +56,18 @@ public class DataJpaMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        return crudRepository.getAllByUserId(userId);
+        return crudRepository.getAllByUserId(userId)
+                .stream()
+                .sorted(Comparator.comparing(Meal::getDateTime).reversed()).collect(Collectors.toList());
     }
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
 
-        Specification.where(SpecificationsUtil.<Meal, Integer>fieldIsEqual(userId, "user", "id")
+
+        return crudRepository.findAll(Specification.where(SpecificationsUtil.<Meal, Integer>fieldIsEqual(userId, "user", "id")
                 .and(SpecificationsUtil.greaterThanOrEquals(startDateTime, "dateTime"))
-                .and(SpecificationsUtil.lessThen(endDateTime, "dateTime")));
+                .and(SpecificationsUtil.lessThen(endDateTime, "dateTime"))), Sort.by(Sort.Direction.DESC, "dateTime"));
 
-
-        return crudRepository.findAll
-                (Specification.where
-                        (((Specification<Meal>) (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user").get("id"), userId))
-                                .and(((Specification<Meal>) (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("dateTime"), startDateTime))
-                                        .and((Specification<Meal>) (root, query, criteriaBuilder) -> criteriaBuilder.lessThan(root.get("dateTime"), endDateTime)))))
-                .stream()
-                .sorted(Comparator.comparing(Meal::getDate).reversed())
-                .collect(Collectors.toList());
     }
 }
