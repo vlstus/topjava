@@ -45,7 +45,7 @@
 
         <!--no pooling-->
         <bean id="dataSource"
-              class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+              class="org.apache.tomcat.jdbc.pool.DataSource"
               p:driverClassName="org.hsqldb.jdbcDriver"
               p:url="${database.url}"
               p:username="${database.username}"
