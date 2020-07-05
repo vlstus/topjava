@@ -22,9 +22,9 @@ public abstract class JdbcMealRepository implements MealRepository {
 
     protected final JdbcTemplate jdbcTemplate;
 
-    protected final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    protected final SimpleJdbcInsert insertMeal;
+    private final SimpleJdbcInsert insertMeal;
 
     @Autowired
     public JdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -38,13 +38,7 @@ public abstract class JdbcMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
-        MapSqlParameterSource map = new MapSqlParameterSource()
-                .addValue("id", meal.getId())
-                .addValue("description", meal.getDescription())
-                .addValue("calories", meal.getCalories())
-                .addValue("date_time", meal.getDateTime())
-                .addValue("user_id", userId);
-
+        MapSqlParameterSource map = getMapSqlParameterSource(meal, userId);
         if (meal.isNew()) {
             Number newId = insertMeal.executeAndReturnKey(map);
             meal.setId(newId.intValue());
@@ -57,6 +51,15 @@ public abstract class JdbcMealRepository implements MealRepository {
             }
         }
         return meal;
+    }
+
+    protected MapSqlParameterSource getMapSqlParameterSource(Meal meal, int userId) {
+        return new MapSqlParameterSource()
+                    .addValue("id", meal.getId())
+                    .addValue("description", meal.getDescription())
+                    .addValue("calories", meal.getCalories())
+                    .addValue("date_time", meal.getDateTime())
+                    .addValue("user_id", userId);
     }
 
     @Override
@@ -83,4 +86,5 @@ public abstract class JdbcMealRepository implements MealRepository {
                 "SELECT * FROM meals WHERE user_id=?  AND date_time >=  ? AND date_time < ? ORDER BY date_time DESC",
                 ROW_MAPPER, userId, startDateTime, endDateTime);
     }
+
 }
