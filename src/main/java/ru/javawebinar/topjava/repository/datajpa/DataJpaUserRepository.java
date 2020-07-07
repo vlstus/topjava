@@ -2,6 +2,8 @@ package ru.javawebinar.topjava.repository.datajpa;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
@@ -17,11 +19,13 @@ public class DataJpaUserRepository implements UserRepository {
         this.crudRepository = crudRepository;
     }
 
+    @Transactional
     @Override
     public User save(User user) {
         return crudRepository.save(user);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public boolean delete(int id) {
         return crudRepository.delete(id) != 0;
@@ -40,5 +44,10 @@ public class DataJpaUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         return crudRepository.findAll(SORT_NAME_EMAIL);
+    }
+
+    @Override
+    public User getWithAllMeals(int id) {
+        return this.get(id);
     }
 }
