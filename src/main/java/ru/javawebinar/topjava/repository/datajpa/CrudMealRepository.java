@@ -12,7 +12,7 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.util.List;
 
-@Transactional(readOnly = true,propagation = Propagation.SUPPORTS)
+@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 public interface CrudMealRepository extends JpaRepository<Meal, Integer>, JpaSpecificationExecutor<Meal> {
 
     @Transactional
@@ -23,5 +23,9 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer>, JpaSpe
     Meal getByIdAndUserId(int id, int userId);
 
     List<Meal> getAllByUserId(int userId);
+
+    @Transactional
+    @Query("SELECT m FROM Meal m LEFT JOIN FETCH m.user WHERE m.id=:id AND m.user.id=:userId")
+    Meal getByIdAndUserIdEager(@Param("id") int id, @Param("userId") int userId);
 
 }

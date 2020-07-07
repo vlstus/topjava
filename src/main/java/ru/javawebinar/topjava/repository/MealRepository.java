@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.repository;
 
+import org.springframework.data.repository.query.Param;
 import ru.javawebinar.topjava.model.Meal;
 
 import java.time.LocalDateTime;
@@ -20,4 +21,8 @@ public interface MealRepository {
 
     // ORDERED dateTime desc
     List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId);
+
+    default Meal getByIdAndUserIdEager(int id, int userId) {
+        throw new UnsupportedOperationException();
+    }
 }
