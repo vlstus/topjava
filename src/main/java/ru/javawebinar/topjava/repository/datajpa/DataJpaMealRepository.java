@@ -1,8 +1,6 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +15,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static org.springframework.data.jpa.domain.Specification.where;
+import static ru.javawebinar.topjava.util.SpecificationsUtil.*;
+
+
 @Repository
 public class DataJpaMealRepository implements MealRepository {
 
     private final CrudMealRepository crudRepository;
-
     private final CrudUserRepository userRepository;
 
     public DataJpaMealRepository(CrudMealRepository crudRepository,
@@ -30,6 +31,16 @@ public class DataJpaMealRepository implements MealRepository {
         this.userRepository = userRepository;
     }
 
+    /**
+     * If meal is new - saves it and returns
+     * if old - check if user id is consistent
+     * return null if not
+     * otherwise - update user and return
+     *
+     * @param meal   mealToUpdate
+     * @param userId id of the user owning the meal
+     * @return new user,updated user or null
+     */
     @Transactional
     @Override
     public Meal save(Meal meal, int userId) {
@@ -67,10 +78,10 @@ public class DataJpaMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        return crudRepository.findAll(Specification.where(
+        return crudRepository.findAll(where(
                 Objects.requireNonNull(SpecificationsUtil.<Meal, Integer>fieldIsEqual(userId, "user", "id")
-                        .and(SpecificationsUtil.greaterThanOrEquals(startDateTime, "dateTime")))
-                        .and(SpecificationsUtil.lessThen(endDateTime, "dateTime"))),
+                        .and(greaterThanOrEquals(startDateTime, "dateTime")))
+                        .and(lessThen(endDateTime, "dateTime"))),
                 Sort.by(Sort.Direction.DESC, "dateTime"));
 
     }

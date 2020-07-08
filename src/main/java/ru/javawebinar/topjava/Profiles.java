@@ -1,6 +1,10 @@
 package ru.javawebinar.topjava;
 
 public class Profiles {
+
+    private Profiles() {
+    }
+
     public static final String
             JDBC = "jdbc",
             JPA = "jpa",
@@ -22,7 +26,7 @@ public class Profiles {
                 Class.forName("org.hsqldb.jdbcDriver");
                 return Profiles.HSQL_DB;
             } catch (ClassNotFoundException e) {
-                throw new IllegalStateException("Could not find DB driver");
+                throw new IllegalStateException("Could not find DB driver", e);
             }
         }
     }

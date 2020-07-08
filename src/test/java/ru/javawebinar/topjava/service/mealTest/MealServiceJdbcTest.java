@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.service;
+package ru.javawebinar.topjava.service.mealTest;
 
 import org.springframework.test.context.ActiveProfiles;
 
