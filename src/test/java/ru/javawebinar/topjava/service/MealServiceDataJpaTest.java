@@ -2,7 +2,6 @@ package ru.javawebinar.topjava.service;
 
 
 import org.junit.Test;
-import org.springframework.data.repository.query.Param;
 import org.springframework.test.context.ActiveProfiles;
 import ru.javawebinar.topjava.model.Meal;
 
