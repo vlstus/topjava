@@ -109,7 +109,7 @@ public abstract class JdbcMealRepository<T> implements MealRepository {
 
     @Repository
     @Profile("hsqldb")
-    public class JdbcMealHsqlDbRepository extends JdbcMealRepository<Timestamp> {
+    public static class JdbcMealHsqlDbRepository extends JdbcMealRepository<Timestamp> {
         public JdbcMealHsqlDbRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
             super(jdbcTemplate, namedParameterJdbcTemplate);
         }
