@@ -4,16 +4,18 @@
 <html>
 <head>
     <title>Meal</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="resources/css/style.css">
 </head>
 <body>
 <section>
-    <h3><a href="index.html">Home</a></h3>
+    <h3><a href="${pageContext.request.contextPath}/">Home</a></h3>
     <hr>
     <h2>${param.action == 'create' ? 'Create meal' : 'Edit meal'}</h2>
-    <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
+    <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo" scope="request"/>
     <form method="post" action="meals">
+        <input type="hidden" name="action" value="${param.action}">
         <input type="hidden" name="id" value="${meal.id}">
+        <input type="hidden" name="excess" value="${meal.excess}">
         <dl>
             <dt>DateTime:</dt>
             <dd><input type="datetime-local" value="${meal.dateTime}" name="dateTime" required></dd>
