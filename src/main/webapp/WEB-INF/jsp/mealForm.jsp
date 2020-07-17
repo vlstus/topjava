@@ -10,7 +10,7 @@
 <section>
     <h3><a href="${pageContext.request.contextPath}/"><spring:message code="meal.home"/></a></h3>
     <hr>
-    <h2><spring:message code="${param.action == 'create' ? 'meal.create' : 'meal.update'}"/></h2>
+    <h2><spring:message code="${param.action == 'create' ? 'meal.add' : 'meal.update'}"/></h2>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo" scope="request"/>
     <form method="post" action="meals">
         <input type="hidden" name="action" value="${param.action}">
