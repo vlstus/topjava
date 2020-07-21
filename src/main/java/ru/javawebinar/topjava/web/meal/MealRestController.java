@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava.web.meal;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.Meal;
@@ -18,8 +17,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 @Controller
-public class MealRestController extends AbstractMealController{
-    private static final Logger log = LoggerFactory.getLogger(MealRestController.class);
+public class MealRestController extends AbstractMealController {
 
     public MealRestController(MealService service) {
         super(service);
@@ -68,7 +66,6 @@ public class MealRestController extends AbstractMealController{
         int userId = SecurityUtil.authUserId();
         log.info("getBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
 
-        List<Meal> mealsDateFiltered = service.getBetweenInclusive(startDate, endDate, userId);
-        return MealsUtil.getFilteredTos(mealsDateFiltered, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
+        return getTosBetween(startDate, startTime, endDate, endTime);
     }
 }
