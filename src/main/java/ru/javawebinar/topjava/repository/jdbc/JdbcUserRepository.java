@@ -13,6 +13,9 @@ import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
@@ -63,6 +66,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     @Transactional
     public User save(User user) {
+        validateConstraints(user);
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
         ArrayList<Role> roles;
         if (user.isNew()) {
@@ -104,6 +108,7 @@ public class JdbcUserRepository implements UserRepository {
         }
         return user;
     }
+
 
     @Override
     @Transactional
@@ -151,5 +156,12 @@ public class JdbcUserRepository implements UserRepository {
 //        return jdbcTemplate.query
 //                ("SELECT id, name, email, password, registered, enabled, calories_per_day, string_agg(role, ', ') AS roles FROM users LEFT JOIN user_roles ON users.id=user_roles.user_id GROUP BY users.id ORDER BY name, email",
 //                        ROW_MAPPER);
+    }
+
+    private void validateConstraints(User user) {
+        Set<ConstraintViolation<User>> violations = Validation.buildDefaultValidatorFactory().getValidator().validate(user);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
     }
 }

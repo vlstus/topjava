@@ -4,6 +4,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
+import ru.javawebinar.topjava.model.validation.constraintsGroups.meal.Persisted;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -45,7 +46,11 @@ public class Meal extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @NotNull
+    /*
+    Persisted constraint group added to not validate it when meal object is new
+    and have no user assigned yet
+    */
+    @NotNull(groups = Persisted.class)
     private User user;
 
     public Meal() {
