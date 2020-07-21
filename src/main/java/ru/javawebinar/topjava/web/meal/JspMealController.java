@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.web;
+package ru.javawebinar.topjava.web.meal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,6 +10,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,17 +19,18 @@ import java.util.List;
 
 @RequestMapping("/meals")
 @Controller
-public class JspMealController {
+public class JspMealController extends AbstractMealController {
 
-    @Autowired
-    MealService mealService;
+    public JspMealController(MealService mealService) {
+        super(mealService);
+    }
 
 
     @GetMapping
     public ModelAndView getAll(ModelAndView modelAndView) {
         modelAndView.setViewName("meals");
         modelAndView.addObject("meals",
-                MealsUtil.getTos(mealService.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay()));
+                MealsUtil.getTos(service.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay()));
         return modelAndView;
     }
 
@@ -37,7 +39,7 @@ public class JspMealController {
                                        @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                                        @RequestParam(value = "startTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime startTime,
                                        @RequestParam(value = "endTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime endTime) {
-        List<Meal> betweenDates = mealService.getBetweenInclusive(startDate, endDate, SecurityUtil.authUserId());
+        List<Meal> betweenDates = service.getBetweenInclusive(startDate, endDate, SecurityUtil.authUserId());
         List<MealTo> betweenTime = MealsUtil.getFilteredTos(betweenDates, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
         ModelAndView modelAndView = new ModelAndView("meals");
         modelAndView.addObject("meals", betweenTime);
@@ -54,26 +56,26 @@ public class JspMealController {
 
     @PostMapping(params = "action=create")
     public ModelAndView create(@ModelAttribute("mealTo") MealTo mealTo) {
-        mealService.create(MealsUtil.createEntity(mealTo), SecurityUtil.authUserId());
+        service.create(MealsUtil.createEntity(mealTo), SecurityUtil.authUserId());
         return new ModelAndView("redirect:meals");
     }
 
     @GetMapping(params = {"action=update", "id"})
     public ModelAndView redirectToUpdateForm(@RequestParam("id") int mealId) {
         ModelAndView mealForm = new ModelAndView("mealForm");
-        mealForm.addObject("meal", MealsUtil.createTo(mealService.get(mealId, SecurityUtil.authUserId()), false));
+        mealForm.addObject("meal", MealsUtil.createTo(service.get(mealId, SecurityUtil.authUserId()), false));
         return mealForm;
     }
 
     @PostMapping(params = "action=update")
     public ModelAndView update(@ModelAttribute("mealTo") MealTo mealTo) {
-        mealService.update(MealsUtil.createEntity(mealTo), SecurityUtil.authUserId());
+        service.update(MealsUtil.createEntity(mealTo), SecurityUtil.authUserId());
         return new ModelAndView("redirect:meals");
     }
 
     @GetMapping(params = {"action=delete", "id"})
     public ModelAndView delete(@RequestParam("id") int mealId) {
-        mealService.delete(mealId, SecurityUtil.authUserId());
+        service.delete(mealId, SecurityUtil.authUserId());
         return new ModelAndView("redirect:meals");
     }
 
