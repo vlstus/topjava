@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.model.validation.constraintsGroups.Persisted;
 import ru.javawebinar.topjava.repository.UserRepository;
 
 import javax.validation.ConstraintViolation;
@@ -74,14 +75,14 @@ public class JdbcUserRepository implements UserRepository {
                     , getRolesParameterSource(user));
         } else if (namedParameterJdbcTemplate.update(
                 "UPDATE users SET name=:name, email=:email, password=:password, " +
-                        "registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id", parameterSource) == 0) {
+                        "registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id",
+                parameterSource) == 0) {
             return null;
         } else {
+            validateConstraints(user, Persisted.class);
             namedParameterJdbcTemplate.update("DELETE FROM user_roles WHERE user_id=:id", parameterSource);
             namedParameterJdbcTemplate.batchUpdate("INSERT INTO user_roles (user_id,role) VALUES (:id,:role)"
                     , getRolesParameterSource(user));
-//            namedParameterJdbcTemplate.batchUpdate("UPDATE user_roles SET role = :role WHERE user_id = :id",
-//                    getRolesParameterSource(user));
         }
         return user;
     }
@@ -110,7 +111,10 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User get(int id) {
-        List<User> users = jdbcTemplate.query("SELECT * FROM users LEFT JOIN user_roles ON user_roles.user_id = users.id WHERE users.id = ?", userWithRolesExtractor, id);
+        List<User> users = jdbcTemplate.query(
+                "SELECT * FROM users" +
+                        " LEFT JOIN user_roles ON user_roles.user_id = users.id" +
+                        " WHERE users.id = ?", userWithRolesExtractor, id);
         return DataAccessUtils.singleResult(users);
     }
 
@@ -125,15 +129,15 @@ public class JdbcUserRepository implements UserRepository {
         List<Role> roles = jdbcTemplate.query("SELECT * FROM user_roles WHERE user_roles.user_id = ?",
                 new ResultSetExtractor<List<Role>>() {
 
-            @Override
-            public List<Role> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                ArrayList<Role> roles = new ArrayList<>();
-                while (rs.next()) {
-                    roles.add(Role.valueOf(rs.getString("role")));
-                }
-                return roles;
-            }
-        }, user.getId());
+                    @Override
+                    public List<Role> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                        ArrayList<Role> roles = new ArrayList<>();
+                        while (rs.next()) {
+                            roles.add(Role.valueOf(rs.getString("role")));
+                        }
+                        return roles;
+                    }
+                }, user.getId());
         user.setRoles(roles);
         return user;
     }
@@ -148,7 +152,7 @@ public class JdbcUserRepository implements UserRepository {
 //                        ROW_MAPPER);
     }
 
-    private void validateConstraints(User user) {
+    private void validateConstraints(User user, Class<?>... groups) {
         Set<ConstraintViolation<User>> violations = Validation.buildDefaultValidatorFactory().getValidator().validate(user);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);

@@ -4,7 +4,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
-import ru.javawebinar.topjava.model.validation.constraintsGroups.meal.Persisted;
+import ru.javawebinar.topjava.model.validation.constraintsGroups.Persisted;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
