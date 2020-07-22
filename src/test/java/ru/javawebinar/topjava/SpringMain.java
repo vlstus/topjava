@@ -47,6 +47,9 @@ public class SpringMain {
             System.out.println(byEmail);
             List<User> allUsers = userService.getAll();
             System.out.println(allUsers);
+            createdUser.setRoles(Set.of(Role.USER));
+            userService.update(createdUser);
+            System.out.println(createdUser);
         }
     }
 }
