@@ -53,7 +53,8 @@ class RootControllerTest extends AbstractControllerTest {
                             private List<Meal> getEntities(List<MealTo> transferObjects) {
                                 return transferObjects.stream()
                                         .map(transferObject ->
-                                                new Meal(transferObject.getId(),
+                                                new Meal(
+                                                        transferObject.getId(),
                                                         transferObject.getDateTime(),
                                                         transferObject.getDescription(),
                                                         transferObject.getCalories()))
