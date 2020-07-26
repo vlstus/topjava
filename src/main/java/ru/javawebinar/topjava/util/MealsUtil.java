@@ -17,6 +17,16 @@ public class MealsUtil {
     private MealsUtil() {
     }
 
+    public static List<Meal> getEntities(Collection<MealTo> transferObjects) {
+        return transferObjects.stream()
+                .map(MealsUtil::getEntity)
+                .collect(Collectors.toList());
+    }
+
+    public static Meal getEntity(MealTo transferObject) {
+        return new Meal(transferObject.getId(), transferObject.getDateTime(), transferObject.getDescription(), transferObject.getCalories());
+    }
+
     public static List<MealTo> getTos(Collection<Meal> meals, int caloriesPerDay) {
         return filterByPredicate(meals, caloriesPerDay, meal -> true);
     }

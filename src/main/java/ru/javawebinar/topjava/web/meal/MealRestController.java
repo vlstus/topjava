@@ -8,13 +8,15 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.to.MealTo;
+
 
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static ru.javawebinar.topjava.util.MealsUtil.getEntities;
 
 
 @RestController
@@ -24,18 +26,11 @@ public class MealRestController extends AbstractMealController {
 
     @GetMapping
     public List<Meal> getAllEntities() {
-        return super.getAll().stream()
-                .map(transferObject ->
-                        new Meal(
-                                transferObject.getId(),
-                                transferObject.getDateTime(),
-                                transferObject.getDescription(),
-                                transferObject.getCalories()))
-                .collect(Collectors.toList());
+        return getEntities(super.getAll());
     }
 
     @Override
-    @GetMapping(value = "get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Meal get(@PathVariable int id) {
         return super.get(id);
     }
@@ -69,13 +64,7 @@ public class MealRestController extends AbstractMealController {
             @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) @RequestParam LocalTime startTime,
             @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam LocalDate endDate,
             @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) @RequestParam LocalTime endTime) {
-        return super.getBetween(startDate, startTime, endDate, endTime).stream()
-                .map(transferObject ->
-                        new Meal(
-                                transferObject.getId(),
-                                transferObject.getDateTime(),
-                                transferObject.getDescription(),
-                                transferObject.getCalories()))
-                .collect(Collectors.toList());
+        return getEntities(super.getBetween(startDate, startTime, endDate, endTime));
     }
+
 }
