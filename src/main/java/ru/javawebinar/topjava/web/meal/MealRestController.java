@@ -30,7 +30,7 @@ public class MealRestController extends AbstractMealController {
     }
 
     @Override
-    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "{id}")
     public Meal get(@PathVariable int id) {
         return super.get(id);
     }
@@ -58,7 +58,7 @@ public class MealRestController extends AbstractMealController {
         super.update(meal, id);
     }
 
-    @GetMapping(params = {"startDate", "startTime", "endDate", "endTime"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(params = {"startDate", "startTime", "endDate", "endTime"})
     public List<Meal> getEntitiesBetween(
             @Nullable @RequestParam LocalDate startDate,
             @Nullable @RequestParam LocalTime startTime,
