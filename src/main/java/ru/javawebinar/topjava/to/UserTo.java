@@ -3,7 +3,7 @@ package ru.javawebinar.topjava.to;
 import org.hibernate.validator.constraints.Range;
 import ru.javawebinar.topjava.util.UserUtil;
 import ru.javawebinar.topjava.web.validation.constraint.Unique;
-import ru.javawebinar.topjava.web.validation.service.UserServiceUniqueValidator;
+import ru.javawebinar.topjava.web.validation.service.UserUniqueEmailValidationService;
 
 
 import javax.validation.constraints.Email;
@@ -22,7 +22,7 @@ public class UserTo extends BaseTo implements Serializable {
     @Email
     @NotBlank
     @Size(max = 100)
-    @Unique(service = UserServiceUniqueValidator.class, fieldName = "email", message = "{unique.email.violation}")
+    @Unique(service = UserUniqueEmailValidationService.class, fieldName = "email", message = "{unique.email.violation}")
     private String email;
 
     @NotBlank

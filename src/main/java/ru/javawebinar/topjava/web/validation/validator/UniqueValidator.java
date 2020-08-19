@@ -18,15 +18,12 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
 
     @Override
     public void initialize(Unique unique) {
-        Class<? extends FieldUniqueValidator> clazz = unique.service();
+        Class<? extends FieldUniqueValidator> validationServiceClass = unique.service();
         this.fieldName = unique.fieldName();
         String serviceQualifier = unique.serviceQualifier();
-
-        if (!serviceQualifier.equals("")) {
-            this.service = this.applicationContext.getBean(serviceQualifier, clazz);
-        } else {
-            this.service = this.applicationContext.getBean(clazz);
-        }
+        this.service = serviceQualifier.equals("") ?
+                this.applicationContext.getBean(validationServiceClass) :
+                this.applicationContext.getBean(serviceQualifier, validationServiceClass);
     }
 
     public boolean isValid(Object obj, ConstraintValidatorContext context) {

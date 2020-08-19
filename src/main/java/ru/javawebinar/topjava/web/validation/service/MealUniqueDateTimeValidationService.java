@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.web.validation.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.web.SecurityUtil;
@@ -10,22 +9,26 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Component
-public class MealServiceUniqueValidator implements FieldUniqueValidator {
+public class MealUniqueDateTimeValidationService implements FieldUniqueValidator {
 
-    @Autowired
-    MealService service;
+    final MealService service;
+
+    public MealUniqueDateTimeValidationService(MealService service) {
+        this.service = service;
+    }
 
     @Override
     public boolean fieldValueExists(Object value, String fieldName) {
         Objects.requireNonNull(fieldName);
-        if (!fieldName.equals("dateTime")) {
-            throw new UnsupportedOperationException("Field name not supported");
+        if (!fieldName.equals("dateTime") && !(value instanceof LocalDateTime)) {
+            throw new UnsupportedOperationException("Field name or type not supported");
         }
         if (value == null) {
             return false;
         }
+        LocalDateTime fieldValue = (LocalDateTime) value;
         return service.getAll(SecurityUtil.get().getId()).stream()
-                .anyMatch(meal -> meal.getDateTime().equals(LocalDateTime.parse(value.toString())));
+                .anyMatch(meal -> meal.getDateTime().equals(fieldValue));
 
     }
 }

@@ -1,9 +1,7 @@
 package ru.javawebinar.topjava.web.validation.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Component;
-import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 import ru.javawebinar.topjava.web.validation.FieldUniqueValidator;
@@ -11,10 +9,13 @@ import ru.javawebinar.topjava.web.validation.FieldUniqueValidator;
 import java.util.Objects;
 
 @Component
-public class UserServiceUniqueValidator implements FieldUniqueValidator {
+public class UserUniqueEmailValidationService implements FieldUniqueValidator {
 
-    @Autowired
-    UserService service;
+    final UserService service;
+
+    public UserUniqueEmailValidationService(UserService service) {
+        this.service = service;
+    }
 
     @Override
     public boolean fieldValueExists(Object value, String fieldName) {
@@ -26,8 +27,7 @@ public class UserServiceUniqueValidator implements FieldUniqueValidator {
             return false;
         }
         try {
-            service.getByEmail(value.toString());
-            return true;
+            return service.getByEmail(value.toString()) != null;
         } catch (NotFoundException notFoundException) {
             return false;
         }

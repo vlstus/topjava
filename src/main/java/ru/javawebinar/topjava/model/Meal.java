@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import ru.javawebinar.topjava.View;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.web.validation.constraint.Unique;
-import ru.javawebinar.topjava.web.validation.service.MealServiceUniqueValidator;
+import ru.javawebinar.topjava.web.validation.service.MealUniqueDateTimeValidationService;
 
 
 import javax.persistence.*;
@@ -37,7 +37,7 @@ public class Meal extends AbstractBaseEntity {
     @Column(name = "date_time", nullable = false)
     @NotNull
     @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
-    @Unique(service = MealServiceUniqueValidator.class, fieldName = "dateTime", message = "{unique.dateTime.violation}")
+    @Unique(service = MealUniqueDateTimeValidationService.class, fieldName = "dateTime", message = "{unique.dateTime.violation}")
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
