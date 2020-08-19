@@ -8,7 +8,7 @@ import ru.javawebinar.topjava.web.validation.constraint.Unique;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class UniqueValidator implements ConstraintValidator<Unique, String> {
+public class UniqueValidator implements ConstraintValidator<Unique, Object> {
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -29,7 +29,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
         }
     }
 
-    public boolean isValid(String obj, ConstraintValidatorContext context) {
+    public boolean isValid(Object obj, ConstraintValidatorContext context) {
         return !this.service.fieldValueExists(obj, this.fieldName);
     }
 }

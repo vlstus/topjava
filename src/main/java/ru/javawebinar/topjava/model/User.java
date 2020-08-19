@@ -7,6 +7,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
+import ru.javawebinar.topjava.web.validation.constraint.Unique;
+import ru.javawebinar.topjava.web.validation.service.UserServiceUniqueValidator;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -35,6 +37,7 @@ public class User extends AbstractNamedEntity {
     @Email
     @NotBlank
     @Size(max = 100)
+    @Unique(service = UserServiceUniqueValidator.class, fieldName = "email", message = "{unique.email.violation}")
     private String email;
 
     @Column(name = "password", nullable = false)

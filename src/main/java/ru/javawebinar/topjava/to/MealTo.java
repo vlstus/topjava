@@ -1,11 +1,17 @@
 package ru.javawebinar.topjava.to;
 
+
+import ru.javawebinar.topjava.web.validation.constraint.Unique;
+import ru.javawebinar.topjava.web.validation.service.MealServiceUniqueValidator;
+
 import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class MealTo extends BaseTo {
 
+
+    @Unique(service = MealServiceUniqueValidator.class, fieldName = "dateTime", message = "{unique.dateTime.violation}")
     private final LocalDateTime dateTime;
 
     private final String description;

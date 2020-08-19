@@ -5,6 +5,7 @@ import ru.javawebinar.topjava.util.UserUtil;
 import ru.javawebinar.topjava.web.validation.constraint.Unique;
 import ru.javawebinar.topjava.web.validation.service.UserServiceUniqueValidator;
 
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ public class UserTo extends BaseTo implements Serializable {
     @Email
     @NotBlank
     @Size(max = 100)
-    @Unique(service = UserServiceUniqueValidator.class, fieldName = "email")
+    @Unique(service = UserServiceUniqueValidator.class, fieldName = "email", message = "{unique.email.violation}")
     private String email;
 
     @NotBlank
